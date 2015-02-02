@@ -38,9 +38,9 @@ function calculatePreflopBet(game, hand) {
     
     var maximumWage = 0;
     if (hasPair && bestCard>11) {
-        maximumWage = 300;
+        maximumWage = 600;
     } else if (hasPair) {
-        maximumWage = 150;
+        maximumWage = 350;
     } else if (bestCard > 11) {
         maximumWage = 100;
     }
@@ -152,7 +152,7 @@ function postFlopEvaluator(hand, communityCardArray, selfCards) {
     } else if (dangerLevel>0) {
         result.rankAlwaysRaiseThresold = 5;
         result.rankAlwaysCallThreshold = 4;
-        result.rankMayCallThreshold = 3;
+        result.rankMayCallThreshold = 2;
         result.maximumWage /= 2;
     }
     result.dangerLevel = dangerLevel;
@@ -179,11 +179,11 @@ function calculateBet(game, hand) {
         return {action:game.betting.canRaise ?"RAISE-1":"CALL-1 (LIMIT)", bet: game.betting.canRaise ? bet : game.betting.call};
 
     } else if (handRank >= evaluation.rankAlwaysCallThreshold) {
-        
-        if (handRank>3 && Math.random()>0.8 && (game.betting.call*5+game.self.wagered) < evaluation.maximumWage) {
-            return {action: "RAISE-2", bet:game.betting.call*5};
-        } else if (handRank>3 && Math.random()>0.5 && (game.betting.call*2+game.self.wagered) < evaluation.maximumWage) {
-            return {action: "RAISE-2", bet:game.betting.call*2};
+        var modifier1 = 5, modifier2 = 2;
+        if (handRank>3 && Math.random()>0.9 && (game.betting.call*modifier1+game.self.wagered) < evaluation.maximumWage) {
+            return {action: "RAISE-2", bet:game.betting.call*modifier1};
+        } else if (handRank>3 && Math.random()>0.8 && (game.betting.call*modifier2+game.self.wagered) < evaluation.maximumWage) {
+            return {action: "RAISE-2", bet:game.betting.call*modifier2};
         }
         
         return {action: "CALL-2", bet:game.betting.call};
